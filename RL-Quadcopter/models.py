@@ -1,5 +1,6 @@
 from keras import layers, models, optimizers
 from keras import backend as K
+from keras.regularizers import l1, l2
 
 class Actor:
     """Actor (Policy) Model."""
@@ -31,8 +32,16 @@ class Actor:
 
         # Add hidden layers
         net = layers.Dense(units=32, activation='relu')(states)
+        net = layers.BatchNormalization()(net)
+#        net = layers.Dropout(0.2)(net)
         net = layers.Dense(units=64, activation='relu')(net)
+        net = layers.BatchNormalization()(net)
+#        net = layers.Dropout(0.2)(net)
         net = layers.Dense(units=32, activation='relu')(net)
+        net = layers.BatchNormalization()(net)
+#        net = layers.Dropout(0.2)(net)
+#        net = layers.Dense(units=32, activation='relu', kernel_regularizer=l2(0.01))(net)
+#        net = layers.BatchNormalization()(net)
 
         # Try different layer sizes, activations, add batch normalization, regularizers, etc.
 
@@ -88,11 +97,23 @@ class Critic:
 
         # Add hidden layer(s) for state pathway
         net_states = layers.Dense(units=32, activation='relu')(states)
+        net_states = layers.BatchNormalization()(net_states)
+#        net_states = layers.Dropout(0.2)(net_states)
         net_states = layers.Dense(units=64, activation='relu')(net_states)
+        net_states = layers.BatchNormalization()(net_states)
+#        net_states = layers.Dropout(0.2)(net_states)
+#        net_states = layers.Dense(units=32, activation='relu')(net_states)
+#        net_states = layers.BatchNormalization()(net_states)
 
         # Add hidden layer(s) for action pathway
         net_actions = layers.Dense(units=32, activation='relu')(actions)
+        net_actions = layers.BatchNormalization()(net_actions)
+#        net_actions = layers.Dropout(0.2)(net_actions)
         net_actions = layers.Dense(units=64, activation='relu')(net_actions)
+        net_actions = layers.BatchNormalization()(net_actions)
+#        net_actions = layers.Dropout(0.2)(net_actions)
+#        net_actions = layers.Dense(units=32, activation='relu',  kernel_regularizer=l2(0.01))(net_actions)
+#        net_actions = layers.BatchNormalization()(net_actions)
 
         # Try different layer sizes, activations, add batch normalization, regularizers, etc.
 
@@ -119,5 +140,5 @@ class Critic:
         self.get_action_gradients = K.function(
             inputs=[*self.model.input, K.learning_phase()],
             outputs=action_gradients)
-            
+
 

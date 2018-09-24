@@ -33,12 +33,47 @@ class Task():
         sim_pos = np.array(self.sim.pose[2])
         target_pos = self.target_pos[2]
         if sim_pos <= 0.0:
-            reward = -1            
+            reward = -10.0            
         elif sim_pos >= target_pos:
-            reward = 1.0
+            reward = 10.0
         else:
             reward = 0.0           
         return reward
+
+    def get_cont_reward(self):
+        """Uses current pose of sim to return reward."""
+        reward = 0.0
+        sim_pos = np.array(self.sim.pose[2])
+        target_pos = self.target_pos[2]
+
+        if sim_pos <= 0.0:
+            reward = -1.0            
+        elif sim_pos >= target_pos:
+            reward = 1.0
+        else:
+            reward = sim_pos / target_pos 
+        if self.sim.done and sim_pos < target_pos:
+            reward = -1.0
+        return reward
+
+    def get_cont_reward2(self):
+        """Uses current pose of sim to return reward."""
+        reward = 0.0
+        sim_pos = np.array(self.sim.pose[2])
+        target_pos = self.target_pos[2]
+        h = sim_pos - target_pos
+        
+        if sim_pos <= 0.0 or (sim_pos > 1.5 * target_pos):
+            reward = -1.0            
+        elif sim_pos >= target_pos:
+            reward = 1.0
+        else:
+            reward = sim_pos / target_pos 
+            
+        if self.sim.done and sim_pos < target_pos:
+            reward = -1.0
+        return reward
+
 
 
 
@@ -48,9 +83,9 @@ class Task():
         pose_all = []
         for _ in range(self.action_repeat):
             done = self.sim.next_timestep(rotor_speeds) # update the sim pose and velocities
-            reward += self.get_reward() 
+            reward += self.get_cont_reward2() 
             pose_all.append(self.sim.pose)
-            if self.get_reward() != 0.0:
+            if reward == 1.0 or reward == -1.0:
                 done = True
         next_state = np.concatenate(pose_all)
         return next_state, reward, done
