@@ -20,7 +20,7 @@ A dataset of images is used to create a deep neural network model to classify ea
 You may utilize conda virtual environments and create an environment called *distracted_drivers_env* on MacOs using the included environment file, by executing:
 
 ```
-cd notebooks
+cd project_files
 conda create --distracted_drivers_env --file requirements/distracted_drivers_mac.txt
 ```
 
