@@ -17,7 +17,7 @@ A dataset of images is used to create a deep neural network model to classify ea
 * scikit-learn 0.19.1
 * tqdm 4.28.1
 
-You may utilize conda virtual environment and easily create one on MacOs using the included environment file, by executing:
+You may utilize conda virtual environments and create an environment called *distracted_drivers_env* on MacOs using the included environment file, by executing:
 
 ```
 cd notebooks
