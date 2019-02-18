@@ -21,7 +21,7 @@ You may utilize conda virtual environments and create an environment called *dis
 
 ```
 cd project_files
-conda create --distracted_drivers_env --file requirements/distracted_drivers_mac.txt
+conda create --name distracted_drivers_env --file requirements/distracted_drivers_mac.txt
 ```
 
 ### Junyper Notebooks
